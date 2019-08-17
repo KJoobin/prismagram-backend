@@ -38,7 +38,7 @@
     "prisma": "npm run deploy && npm run generate",
     "prebuild": "npm run generate",
     "build": "babel src -d bulid",
-    "postbulid": "copy src/api/**/*.graphql ./bulid/api",
+    "postbuild": "copy src/api/**/*.graphql ./bulid/api",
     "start": "node bulid/server.js"
   }
 }
