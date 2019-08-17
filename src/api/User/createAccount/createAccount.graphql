@@ -1,0 +1,14 @@
+type Query {
+  isOverlap(
+    email: String!
+    ): Boolean!
+}
+
+type Mutation {
+    createAccount(
+      email: String!
+      username: String!
+      firstName: String
+      bio: String!
+      ): Boolean!
+}

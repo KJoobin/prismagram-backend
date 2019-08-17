@@ -1,0 +1,5 @@
+generated
+*.env
+.DS_Store
+bulid
+node_modules
