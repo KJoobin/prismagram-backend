@@ -6,6 +6,7 @@ import { sendSecretMail } from "./utils";
 import "./passport"
 import { authenticateJwt } from "./passport"
 import { isAuthenticated } from "./middlewares.js"
+import { uploadMiddleware, uploadController } from './upload';
 
 const PORT = process.env.PORT || 4000
 
@@ -13,7 +14,8 @@ const server = new GraphQLServer({ schema, context: ({ request }) => ({ request,
 
 server.express.use(logger("dev"));
 server.express.use(authenticateJwt);
-/**/
+server.express.post('/api/image', uploadMiddleware, uploadController);
+
 
 server.start({ port : PORT }, () =>
   console.log(`✅ Server running on http://localhost:${PORT}`)
