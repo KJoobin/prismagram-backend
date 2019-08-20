@@ -6,7 +6,12 @@ import { sendSecretMail } from "./utils";
 import "./passport"
 import { authenticateJwt } from "./passport"
 import { isAuthenticated } from "./middlewares.js"
-import { uploadMiddleware, uploadController } from './upload';
+import {
+  uploadAvatarMiddleware,
+  uploadAvatarController,
+  uploadImageMiddleware,
+  uploadImageController,
+} from './upload';
 
 const PORT = process.env.PORT || 4000
 
@@ -14,7 +19,8 @@ const server = new GraphQLServer({ schema, context: ({ request }) => ({ request,
 
 server.express.use(logger("dev"));
 server.express.use(authenticateJwt);
-server.express.post('/api/image', uploadMiddleware, uploadController);
+server.express.post('/api/image', uploadAvatarMiddleware, uploadAvatarController);
+server.express.post('/api/feed', uploadImageMiddleware, uploadImageController);
 
 
 server.start({ port : PORT }, () =>

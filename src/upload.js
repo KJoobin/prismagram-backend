@@ -5,14 +5,13 @@ import aws from "aws-sdk";
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
   secretAccessKey: process.env.AWS_SECRET,
-  region: "ap-northeast-2"
 });
 
-const upload = multer({
+const avatar = multer({
   storage: multerS3({
     s3,
     acl: "public-read",
-    bucket: "prismagram-s3/avatar",
+    bucket: "prismagram-s/avatar",
     metadata: function(req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -22,12 +21,36 @@ const upload = multer({
   })
 });
 
+const feed = multer({
+  storage: multerS3({
+    s3,
+    acl: "public-read",
+    bucket: "prismagram-s/feed",
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString()+Math.random());
+    }
+  }),
+});
 
-export const uploadMiddleware = upload.single("file");
 
-export const uploadController = (req, res) => {
+export const uploadAvatarMiddleware = avatar.single("file");
+
+export const uploadAvatarController = (req, res) => {
   res.header("Access-Control-Allow-Origin","http://localhost:3000");
   const { file: { location } }  = req;
 
   res.json({ location });
+};
+
+export const uploadImageMiddleware = feed.array("file");
+
+export const uploadImageController = (req, res) => {
+  const { files } = req;
+  const location = files.map(el => {
+    return el.location
+  })
+  res.json({ location })
 };
